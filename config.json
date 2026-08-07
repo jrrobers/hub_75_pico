@@ -1,4 +1,4 @@
 {
-  "railway_api_url": "https://your-railway-app.railway.app/distinct-keys",
+  "railway_api_url": "hub75pico-production.up.railway.app/distinct-keys",
   "stock_tickers": "AAPL,MSFT,TSLA"
 }
