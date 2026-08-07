@@ -1,0 +1,10 @@
+# Ignore local configuration files containing credentials/secrets
+settings.toml
+
+# Ignore temporary/compiled files
+*.tmp
+*.mpy
+
+# OS metadata
+.DS_Store
+.env

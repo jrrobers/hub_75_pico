@@ -1,0 +1,4 @@
+{
+  "railway_api_url": "https://your-railway-app.railway.app/distinct-keys",
+  "stock_tickers": "AAPL,MSFT,TSLA"
+}
