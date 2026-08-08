@@ -118,7 +118,10 @@ except Exception as e:
 
 # Create request session if connected
 pool = socketpool.SocketPool(wifi.radio)
-requests = adafruit_requests.Session(pool) if connected else None
+import ssl
+ssl_context = ssl.create_default_context()
+requests = adafruit_requests.Session(pool, ssl_context) if connected else None
+
 
 # ==============================================================================
 # 4. FILESYSTEM & OTA UPDATES
