@@ -11,6 +11,10 @@ from adafruit_display_text import label
 import microcontroller
 import json
 import random
+import gc
+
+gc.collect()
+
 
 # ==============================================================================
 # 1. DISPLAY INITIALIZATION
@@ -32,7 +36,7 @@ try:
     matrix = rgbmatrix.RGBMatrix(
         width=64,
         height=32,
-        bit_depth=3,
+        bit_depth=1,
         rgb_pins=[
             get_pin("PIN_R1", 2),
             get_pin("PIN_G1", 3),
@@ -56,6 +60,8 @@ except Exception as e:
     print("Failed to initialize display. Check wiring and pin configurations:", e)
     # Fallback dummy display or print error
     display = None
+
+gc.collect()
 
 # Create the display group and label
 group = displayio.Group()
@@ -119,6 +125,7 @@ except Exception as e:
 # Create request session if connected
 pool = socketpool.SocketPool(wifi.radio)
 import ssl
+gc.collect()
 ssl_context = ssl.create_default_context()
 requests = adafruit_requests.Session(pool, ssl_context) if connected else None
 
