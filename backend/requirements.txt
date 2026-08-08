@@ -2,5 +2,6 @@ fastapi
 uvicorn[standard]
 SQLAlchemy[asyncio]
 asyncpg
-yfinance
 python-dotenv
+psycopg2-binary
+httpx

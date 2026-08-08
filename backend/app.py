@@ -14,7 +14,7 @@ from pydantic import BaseModel
 from sqlalchemy import select, func, Column, String, Table, MetaData
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
-import yfinance as yf
+import httpx
 
 # Load environment variables (fallbacks provided)
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./test.db")
@@ -71,14 +71,19 @@ async def distinct_organizations():
 async def stock_prices():
     prices = {}
     try:
-        tickers = yf.Tickers(" ".join([s.strip() for s in STOCK_SYMBOLS]))
-        for symbol in STOCK_SYMBOLS:
-            sym = symbol.strip()
-            data = tickers.tickers.get(sym)
-            if data is None:
-                continue
-            price = data.history(period="1d").close.iloc[-1]
-            prices[sym] = float(price)
+        # Build Yahoo Finance API URL with comma‑separated symbols
+        symbols_param = ",".join([s.strip() for s in STOCK_SYMBOLS])
+        url = f"https://query1.finance.yahoo.com/v7/finance/quote?symbols={symbols_param}"
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url, timeout=10.0)
+            resp.raise_for_status()
+            data = resp.json()
+            # Extract price for each symbol
+            for item in data.get("quoteResponse", {}).get("result", []):
+                sym = item.get("symbol")
+                price = item.get("regularMarketPrice")
+                if sym and price is not None:
+                    prices[sym] = float(price)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     return {"prices": prices}
