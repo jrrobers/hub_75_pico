@@ -1,0 +1,9 @@
+{
+  "files": [
+    "code.py",
+    "quotes.json",
+    "main.py",
+    "memory_guard.py",
+    "update_from_github.py"
+  ]
+}

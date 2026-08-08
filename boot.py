@@ -11,10 +11,15 @@ jumper.pull = digitalio.Pull.UP
 
 # If jumper.value is True (pin high, no jumper), the Pico W gets write access (OTA Mode).
 # If jumper.value is False (pin low, connected to GND), the Mac gets write access (USB Dev Mode).
-if jumper.value:
-    print("OTA Mode: Pico W has write access to filesystem. Mac USB writing disabled.")
-    storage.remount("/", readonly=False)
-else:
-    print("USB Dev Mode: Mac has write access. Pico W code cannot write to filesystem.")
-    storage.remount("/", readonly=True)
+# Always mount the filesystem as writable for development
+print("Boot: Mounting CIRCUITPY as writable (no jumper needed).")
+storage.remount("/", readonly=False)
+
+# Optional: log free RAM at boot (useful for debugging low‑memory issues)
+try:
+    import gc
+    free = gc.mem_free()
+    print(f"Free RAM at boot: {free} bytes")
+except Exception as e:
+    print(f"RAM diagnostic unavailable: {e}")
 

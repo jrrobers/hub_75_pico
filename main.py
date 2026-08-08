@@ -1,7 +1,24 @@
 import os
 from fastapi import FastAPI, HTTPException
 import psycopg2
+# Development helpers
+import update_from_github
+import memory_guard
+import board
 
+# Settings for OTA and memory guard
+settings = {
+    "auto_update": True,
+    "manifest_url": "https://raw.githubusercontent.com/jrrobers/hub_75_pico/main/manifest.json",
+    "github_username": "jrrobers",
+    "github_repo": "hub_75_pico",
+    "github_branch": "main",
+    "excluded_files": ["boot.py", "settings.toml"],
+    "ram_threshold": 8000,
+}
+if settings["auto_update"]:
+    update_from_github.run_update(settings)
+memory_guard.check_memory(settings["ram_threshold"])
 app = FastAPI(
     title="Pico W HUB75 DB Proxy",
     description="Exposes PostgreSQL metrics to the Pico W matrix display over a simple HTTP endpoint."
