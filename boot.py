@@ -9,6 +9,12 @@ jumper = digitalio.DigitalInOut(board.GP22)
 jumper.direction = digitalio.Direction.INPUT
 jumper.pull = digitalio.Pull.UP
 
-# Always USB Dev Mode: Mac has write access. Pico W code cannot write to filesystem.
-storage.remount("/", readonly=False)
+# If jumper.value is True (pin high, no jumper), the Pico W gets write access (OTA Mode).
+# If jumper.value is False (pin low, connected to GND), the Mac gets write access (USB Dev Mode).
+if jumper.value:
+    print("OTA Mode: Pico W has write access to filesystem. Mac USB writing disabled.")
+    storage.remount("/", readonly=False)
+else:
+    print("USB Dev Mode: Mac has write access. Pico W code cannot write to filesystem.")
+    storage.remount("/", readonly=True)
 

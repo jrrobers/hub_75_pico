@@ -341,7 +341,7 @@ while True:
     cycle_count += 1
     
     # Check for updates and refresh Wi-Fi data every 10 cycles (approx 5-10 minutes)
-    if cycle_count % 2 == 0:
+    if cycle_count % 10 == 0:
         check_ota_updates()
         
     time.sleep(1)
