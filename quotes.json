@@ -1,4 +1,6 @@
 [
-  {"text": "I am updating from github.", "author": "JR"},
-
+  {
+    "text": "I am ACTUALLY updating from github.",
+    "author": "JR"
+  },
 ]
