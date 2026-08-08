@@ -1,10 +1,19 @@
-# Ignore local configuration files containing credentials/secrets
-settings.toml
-
-# Ignore temporary/compiled files
-*.tmp
-*.mpy
-
-# OS metadata
+# .gitignore for hub_75_pico project
+# Python / Pip
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+# Virtual env
+venv/
+env/
+# Distribution / packaging
+build/
+Dist/
+*.egg-info/
+# OS generated files
 .DS_Store
+# Secrets and environment files
 .env
+# Local configuration for pico
+pico/*.pyc
