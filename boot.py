@@ -10,5 +10,5 @@ jumper.direction = digitalio.Direction.INPUT
 jumper.pull = digitalio.Pull.UP
 
 # Always USB Dev Mode: Mac has write access. Pico W code cannot write to filesystem.
-storage.remount("/", readonly=True)
+storage.remount("/", readonly=False)
 
