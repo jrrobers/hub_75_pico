@@ -129,6 +129,20 @@ gc.collect()
 ssl_context = ssl.create_default_context()
 requests = adafruit_requests.Session(pool, ssl_context) if connected else None
 
+def ensure_wifi():
+    global requests, connected
+    if not wifi.radio.connected or wifi.radio.ipv4_address is None:
+        print("WiFi connection lost. Reconnecting...")
+        connected = False
+        try:
+            wifi.radio.connect(wifi_ssid, wifi_pw)
+            print("WiFi reconnected! IP:", wifi.radio.ipv4_address)
+            connected = True
+            new_pool = socketpool.SocketPool(wifi.radio)
+            requests = adafruit_requests.Session(new_pool, ssl_context)
+            gc.collect()
+        except Exception as e:
+            print("WiFi reconnect failed:", e)
 
 # ==============================================================================
 # 4. FILESYSTEM & OTA UPDATES
@@ -312,6 +326,7 @@ cycle_count = 0
 
 while True:
     print(f"--- Starting Display Cycle #{cycle_count} ---")
+    ensure_wifi()
     
     # 1. Fetch data
     db_text = fetch_railway_keys()
